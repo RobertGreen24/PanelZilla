@@ -1,0 +1,69 @@
+# PanelZilla — full stack
+#
+#   panel   : the website (store + dashboard + client API)        -> http://localhost
+#   wings   : node daemon that runs game servers in containers     -> internal :3001
+#   redis   : cache / session store (optional, panel works without it)
+#
+#   docker compose up -d --build
+#
+services:
+  panel:
+    build: .
+    container_name: panelzilla-panel
+    restart: unless-stopped
+    ports:
+      - "${PANEL_PORT:-80}:3000"
+    environment:
+      PORT: "3000"
+      HOST: 0.0.0.0
+      DB_PATH: /app/data/panelzilla.db
+      SESSION_SECRET: ${SESSION_SECRET:-change-me-in-production}
+      WINGS_URL: http://wings:3001
+      WINGS_API_KEY: ${WINGS_API_KEY:-change-me-too}
+      WINGS_NODE: node-1
+      SITE_NAME: PanelZilla
+      DEMO_PAYMENTS: "true"
+    volumes:
+      - panel-data:/app/data
+    depends_on:
+      wings:
+        condition: service_started
+    networks:
+      - panelzilla
+
+  wings:
+    build: ./wings
+    container_name: panelzilla-wings
+    restart: unless-stopped
+    expose:
+      - "3001"
+    environment:
+      PORT: "3001"
+      HOST: 0.0.0.0
+      WINGS_API_KEY: ${WINGS_API_KEY:-change-me-too}
+      NODE_NAME: node-1
+      DATA_DIR: /app/data
+    volumes:
+      - wings-data:/app/data
+    networks:
+      - panelzilla
+
+  redis:
+    image: redis:7-alpine
+    container_name: panelzilla-redis
+    restart: unless-stopped
+    expose:
+      - "6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - panelzilla
+
+volumes:
+  panel-data:
+  wings-data:
+  redis-data:
+
+networks:
+  panelzilla:
+    driver: bridge
