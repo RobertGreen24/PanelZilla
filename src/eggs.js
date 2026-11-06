@@ -1,0 +1,125 @@
+'use strict';
+
+/**
+ * Egg catalog — Pterodactyl-style game templates.
+ *
+ * An "egg" defines how a game server is provisioned: the public Docker image,
+ * the startup command and the environment variables it needs. The images
+ * referenced here are public images published by their respective communities
+ * (itzg/minecraft-server, cm2network, etc.), which is exactly how public
+ * Pterodactyl eggs work — anyone may use them.
+ */
+const EGGS = [
+  {
+    slug: 'minecraft-java',
+    name: 'Minecraft: Java Edition',
+    category: 'Sandbox',
+    icon: '⛏️',
+    image: 'itzg/minecraft-server:latest',
+    startup: 'java -Xms{{RAM}}M -Xmx{{RAM}}M -jar server.jar nogui',
+    description: 'Vanilla Minecraft Java server. Supports Paper, Spigot, Forge and Fabric via the EULA flag.',
+    env: { EULA: 'TRUE', TYPE: 'VANILLA', VERSION: 'latest', MEMORY: '{{RAM}}M', ONLINE_MODE: 'true' },
+    logLine: 'Done ({{STARTUP}}s)! For help, type "help"',
+  },
+  {
+    slug: 'minecraft-paper',
+    name: 'Minecraft: Paper (Modded)',
+    category: 'Sandbox',
+    icon: '📜',
+    image: 'itzg/minecraft-server:latest',
+    startup: 'java -Xms{{RAM}}M -Xmx{{RAM}}M -jar server.jar nogui',
+    description: 'Paper/Spigot with plugin support — the go-to for modpacks, plugins and big communities.',
+    env: { EULA: 'TRUE', TYPE: 'PAPER', VERSION: 'latest', MEMORY: '{{RAM}}M', USE_AIKAR_FLAGS: 'true' },
+    logLine: 'Done ({{STARTUP}}s)! For help, type "help"',
+  },
+  {
+    slug: 'minecraft-bedrock',
+    name: 'Minecraft: Bedrock Edition',
+    category: 'Sandbox',
+    icon: '🧱',
+    image: 'itzg/minecraft-server:latest',
+    startup: 'bedrock_server',
+    description: 'Bedrock dedicated server for consoles, mobile and Windows 10/11 players.',
+    env: { EULA: 'TRUE', TYPE: 'BEDROCK', VERSION: 'latest', SERVER_NAME: 'PanelZilla Bedrock' },
+    logLine: 'Server started on port 19132',
+  },
+  {
+    slug: 'rust',
+    name: 'Rust',
+    category: 'Survival',
+    icon: '🦀',
+    image: 'cm2network/steamcmd:latest',
+    startup: './RustDedicated -batchmode +server.ip {{IP}} +server.port {{PORT}} +server.identity "{{NAME}}"',
+    description: 'Rust dedicated server via SteamCMD. Wipes, mods (Oxide/uMod) and custom maps supported.',
+    env: { APPID: '258550', SERVER_NAME: 'PanelZilla Rust', SERVER_DESC: 'Hosted by PanelZilla' },
+    logLine: 'Server startup complete. Listening on port {{PORT}}',
+  },
+  {
+    slug: 'ark',
+    name: 'ARK: Survival Evolved',
+    category: 'Survival',
+    icon: '🦖',
+    image: 'cm2network/steamcmd:latest',
+    startup: './ShooterGameServer "TheIsland?listen?SessionName={{NAME}}" -log',
+    description: 'ARK dedicated server. Cluster-ready, with full config file access in the file manager.',
+    env: { APPID: '376030', SERVER_NAME: 'PanelZilla ARK', MAX_PLAYERS: '20' },
+    logLine: 'Server listening on port {{PORT}}',
+  },
+  {
+    slug: 'valheim',
+    name: 'Valheim',
+    category: 'Survival',
+    icon: '⚔️',
+    image: 'thijsvanloef/valheim-server-docker:latest',
+    startup: './valheim_server.x86_64 -name "{{NAME}}" -port {{PORT}} -world "{{NAME}}" -password "{{PASSWORD}}"',
+    description: 'Valheim dedicated server. Cross-play, mods (BepInEx) and world backups included.',
+    env: { SERVER_NAME: 'PanelZilla Valheim', SERVER_PASS: 'changeme', WORLD_NAME: 'Dedicated' },
+    logLine: 'Game server connected, session name: {{NAME}}',
+  },
+  {
+    slug: 'cs2',
+    name: 'Counter-Strike 2',
+    category: 'Shooter',
+    icon: '🎯',
+    image: 'cm2network/cs2:latest',
+    startup: './game/cs2 -dedicated +game_type 0 +game_mode 1 +map de_dust2 +sv_lan 0',
+    description: 'CS2 dedicated server (competitive or casual) with full GSLT token support.',
+    env: { APPID: '730', SERVER_NAME: 'PanelZilla CS2', MAP: 'de_dust2', TICKRATE: '128' },
+    logLine: 'CS2 server started on port {{PORT}}',
+  },
+  {
+    slug: 'terraria',
+    name: 'Terraria',
+    category: 'Sandbox',
+    icon: '🌋',
+    image: 'ryansheehan/terraria:latest',
+    startup: 'TerrariaServer -world "{{NAME}}.wld" -port {{PORT}} -maxplayers {{SLOTS}} -autocreate 2',
+    description: 'Terraria dedicated server with tModLoader support for modded playthroughs.',
+    env: { WORLD_NAME: 'PanelZilla', MAX_PLAYERS: '8', AUTOCREATE: '2' },
+    logLine: 'Server started on port {{PORT}}',
+  },
+  {
+    slug: 'palworld',
+    name: 'Palworld',
+    category: 'Survival',
+    icon: '🐾',
+    image: 'thijsvanloef/palworld-server-docker:latest',
+    startup: './PalServer.sh -port {{PORT}} -players {{SLOTS}}',
+    description: 'Palworld dedicated server with configurable rates, guilds and PvP settings.',
+    env: { SERVER_NAME: 'PanelZilla Palworld', SERVER_PASSWORD: '', COMMUNITY_SERVER: 'true' },
+    logLine: 'Palworld server started on port {{PORT}}',
+  },
+  {
+    slug: 'garrys-mod',
+    name: "Garry's Mod",
+    category: 'Sandbox',
+    icon: '🔧',
+    image: 'cm2network/steamcmd:latest',
+    startup: './srcds_run -game garrysmod +map gm_construct +maxplayers {{SLOTS}} -tickrate 66',
+    description: 'Garry\'s Mod sandbox server — DarkRP, Prop Hunt, TTT and any workshop addon collection.',
+    env: { APPID: '4020', MAP: 'gm_construct', MAX_PLAYERS: '16', TICKRATE: '66' },
+    logLine: 'Server started on port {{PORT}}',
+  },
+];
+
+module.exports = EGGS;

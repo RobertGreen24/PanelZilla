@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Server — PanelZilla</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="nav"></nav>
+  <div class="container">
+    <div class="server-head">
+      <span id="srv-icon" style="font-size:38px;">🖥️</span>
+      <div>
+        <h1 id="srv-name">Loading…</h1>
+        <div class="muted" id="srv-sub" style="font-size:13.5px;"></div>
+      </div>
+      <div style="margin-left:auto; display:flex; gap:14px; align-items:center;">
+        <span id="srv-state"></span>
+        <div class="power-group">
+          <button class="btn success small" data-power="start">▶ Start</button>
+          <button class="btn secondary small" data-power="restart">↻ Restart</button>
+          <button class="btn danger small" data-power="stop">⏹ Stop</button>
+          <button class="btn ghost small" data-power="kill" title="Force kill">✖ Kill</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); margin-bottom:22px;" id="stat-cards"></div>
+
+    <div class="tabs" id="tabs">
+      <button data-tab="console" class="active">🖥️ Console</button>
+      <button data-tab="files">📁 Files</button>
+      <button data-tab="backups">💾 Backups</button>
+      <button data-tab="subusers">👥 Subusers</button>
+      <button data-tab="settings">⚙️ Settings</button>
+    </div>
+
+    <section id="tab-console">
+      <div class="console mono" id="console"></div>
+      <form class="console-form" id="console-form">
+        <input id="console-input" placeholder='Send command… e.g. "say Hello world" (without the slash)' autocomplete="off">
+        <button class="btn small">Send</button>
+      </form>
+    </section>
+
+    <section id="tab-files" style="display:none;">
+      <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px;">
+        <button class="btn ghost small" id="file-up">⬅ Up</button>
+        <span class="mono muted" id="file-path">/</span>
+        <button class="btn small" id="file-new" style="margin-left:auto;">＋ New file</button>
+      </div>
+      <div class="card" id="file-list" style="padding:10px;"></div>
+      <div id="file-editor-wrap" style="display:none; margin-top:16px;">
+        <h3 id="file-editor-title" class="mono"></h3>
+        <textarea class="editor mono" id="file-editor"></textarea>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button class="btn small" id="file-save">Save</button>
+          <button class="btn ghost small" id="file-close">Close</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-backups" style="display:none;">
+      <button class="btn" id="backup-create">💾 Create backup</button>
+      <div class="card" style="margin-top:16px; padding:10px;" id="backup-list"><div class="empty">Loading…</div></div>
+    </section>
+
+    <section id="tab-subusers" style="display:none;">
+      <div class="card" id="subuser-add" style="margin-bottom:16px;">
+        <h3 style="margin-top:0;">Invite a subuser</h3>
+        <label>Email of a registered PanelZilla user</label>
+        <input id="subuser-email" placeholder="friend@example.com">
+        <label>Permissions</label>
+        <div class="badge-row" id="subuser-perms">
+          ${['console', 'power', 'file', 'backup', 'settings'].map(p => `<label style="display:flex; gap:6px; align-items:center; color:var(--text);"><input type="checkbox" value="${p}" style="width:auto;"> ${p}</label>`).join('')}
+        </div>
+        <div style="margin-top:12px;"><button class="btn small" id="subuser-invite">Invite</button></div>
+        <div class="form-error" id="subuser-error"></div>
+      </div>
+      <div class="card" style="padding:10px;" id="subuser-list"><div class="empty">Loading…</div></div>
+    </section>
+
+    <section id="tab-settings" style="display:none;">
+      <div class="card" style="max-width:520px;">
+        <label>Server name</label>
+        <input id="set-name">
+        <label>Description</label>
+        <input id="set-desc">
+        <div style="margin-top:14px;"><button class="btn small" id="set-save">Save changes</button></div>
+        <div class="form-error" id="set-msg"></div>
+        <hr style="border-color:var(--card-border); margin:22px 0;">
+        <dl class="kv" id="srv-details"></dl>
+      </div>
+    </section>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/server.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "panelzilla",
+  "version": "1.0.0",
+  "description": "PanelZilla - Docker-based game server hosting panel with a built-in store (Pterodactyl-style)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "wings": "node wings/server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2"
+  }
+}

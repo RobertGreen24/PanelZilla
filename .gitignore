@@ -1,0 +1,9 @@
+node_modules/
+package-lock.json
+data/
+wings/data/
+*.db
+*.db-wal
+*.db-shm
+.env
+.DS_Store

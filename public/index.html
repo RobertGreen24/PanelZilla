@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PanelZilla — Docker Game Server Hosting</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="nav"></nav>
+
+  <section class="hero container">
+    <h1>Host your game server<br><span class="grad">in under a minute.</span></h1>
+    <p>PanelZilla is a Docker-based game server panel in the spirit of Pterodactyl.
+       Pick a game from the store, and your server runs in its own isolated container —
+       with a live console, file manager, backups and subusers.</p>
+    <div class="cta">
+      <a class="btn" href="/store">🛒 Browse the store</a>
+      <a class="btn ghost" href="/register">Create free account</a>
+    </div>
+
+    <div class="grid features">
+      <div class="card feature"><div class="icon">🐳</div><h3>Docker isolation</h3><p>Every server runs in its own container with hard RAM, CPU and disk limits.</p></div>
+      <div class="card feature"><div class="icon">🥚</div><h3>Game eggs</h3><p>Pterodactyl-style egg templates for Minecraft, Rust, ARK, Valheim, CS2 and more — using public Docker images.</p></div>
+      <div class="card feature"><div class="icon">🖥️</div><h3>Live console</h3><p>Stream the server console in real time and send commands straight from the browser.</p></div>
+      <div class="card feature"><div class="icon">📁</div><h3>File manager</h3><p>Browse, edit and upload server files in the browser — SFTP-style, no client needed.</p></div>
+      <div class="card feature"><div class="icon">💾</div><h3>Backups</h3><p>One-click backups with download and restore, stored per server.</p></div>
+      <div class="card feature"><div class="icon">👥</div><h3>Subusers</h3><p>Invite friends with granular permissions: console, power, files, backups.</p></div>
+      <div class="card feature"><div class="icon">📊</div><h3>Resource stats</h3><p>Live CPU, RAM, disk and network usage for every server you own.</p></div>
+      <div class="card feature"><div class="icon">🛡️</div><h3>DDoS protection</h3><p>All plans include always-on DDoS protection and a free port allocation.</p></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    PanelZilla — an original, Pterodactyl-inspired game server panel. Pterodactyl® is a trademark of its respective owner;
+    PanelZilla is built on public, MIT-licensed concepts (eggs, node daemons, public Docker images).
+  </footer>
+
+  <script src="/js/app.js"></script>
+  <script>PZ.renderNav('home');</script>
+</body>
+</html>

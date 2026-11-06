@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store — PanelZilla</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="nav"></nav>
+
+  <div class="container">
+    <h1 class="page-title">Game Server Store</h1>
+    <p class="page-sub">Choose a game, pick a plan, check out — your server is provisioned automatically on our Docker node.</p>
+
+    <div class="game-tabs" id="game-tabs"></div>
+    <div id="game-detail"></div>
+  </div>
+
+  <!-- cart drawer -->
+  <aside class="drawer" id="cart-drawer">
+    <h2>🛒 Your cart</h2>
+    <div id="cart-items" style="overflow-y:auto; flex:1;"></div>
+    <div class="cart-total">
+      <div class="row"><span>Total / month</span><span id="cart-total">£0.00</span></div>
+      <button class="btn" style="width:100%" id="checkout-btn">Checkout</button>
+    </div>
+  </aside>
+
+  <!-- checkout modal -->
+  <div class="modal-backdrop" id="checkout-modal">
+    <div class="modal">
+      <h2>Checkout</h2>
+      <p class="muted" style="font-size:13px;">Demo mode — no real payment is processed. Any card details work.</p>
+      <div id="checkout-summary" class="muted" style="font-size:14px; margin-bottom:6px;"></div>
+      <label>Card number</label>
+      <input id="cc-num" placeholder="4242 4242 4242 4242" value="4242 4242 4242 4242" inputmode="numeric">
+      <label>Name on card</label>
+      <input id="cc-name" placeholder="Ada Lovelace">
+      <div style="display:flex; gap:12px;">
+        <div style="flex:1;"><label>Expiry</label><input id="cc-exp" placeholder="12/28" value="12/28"></div>
+        <div style="flex:1;"><label>CVC</label><input id="cc-cvc" placeholder="123" value="123" inputmode="numeric"></div>
+      </div>
+      <div class="form-error" id="checkout-error"></div>
+      <div style="display:flex; gap:10px; margin-top:18px;">
+        <button class="btn" style="flex:1;" id="pay-btn">Pay <span id="pay-amount"></span>/mo</button>
+        <button class="btn ghost" id="cancel-checkout">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- success modal -->
+  <div class="modal-backdrop" id="success-modal">
+    <div class="modal" style="text-align:center;">
+      <div style="font-size:52px;">🎉</div>
+      <h2>Order confirmed!</h2>
+      <p class="muted" id="success-text"></p>
+      <a class="btn" href="/dashboard">Go to my servers →</a>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/store.js"></script>
+</body>
+</html>
