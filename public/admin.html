@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — PanelZilla</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <nav class="nav"></nav>
+  <div class="container">
+    <h1 class="page-title">🛡️ Admin area</h1>
+    <p class="page-sub">Platform overview and management. Admin accounts only.</p>
+
+    <div class="grid" id="stat-cards" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); margin-bottom:22px;"></div>
+
+    <div class="tabs" id="admin-tabs">
+      <button data-tab="overview" class="active">📊 Overview</button>
+      <button data-tab="users">👤 Users</button>
+      <button data-tab="servers">🖥️ Servers</button>
+      <button data-tab="orders">🧾 Orders</button>
+    </div>
+
+    <section id="tab-overview">
+      <div class="grid" style="grid-template-columns:1fr 1fr;" id="overview-grid">
+        <div class="card"><h3 style="margin-top:0;">Servers by game</h3><div id="by-egg"></div></div>
+        <div class="card"><h3 style="margin-top:0;">Server states</h3><div id="by-state"></div></div>
+      </div>
+      <div class="card" style="margin-top:20px;">
+        <h3 style="margin-top:0;">Recent orders</h3>
+        <div id="recent-orders"></div>
+      </div>
+    </section>
+
+    <section id="tab-users" style="display:none;">
+      <div class="card" style="padding:10px; overflow-x:auto;"><table class="table" id="users-table"></table></div>
+    </section>
+
+    <section id="tab-servers" style="display:none;">
+      <div class="card" style="padding:10px; overflow-x:auto;"><table class="table" id="servers-table"></table></div>
+    </section>
+
+    <section id="tab-orders" style="display:none;">
+      <div class="card" style="padding:10px; overflow-x:auto;"><table class="table" id="orders-table"></table></div>
+    </section>
+  </div>
+
+  <script src="/js/app.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

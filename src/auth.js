@@ -54,4 +54,18 @@ function requireAuthPage(req, res, next) {
   next();
 }
 
-module.exports = { hashPassword, verifyPassword, createSession, getSessionUser, destroySession, attachUser, requireAuth, requireAuthPage };
+/** Middleware for admin API routes: 401/403 JSON when not an admin. */
+function requireAdmin(req, res, next) {
+  if (!req.user) return res.status(401).json({ error: 'Authentication required' });
+  if (!req.user.is_admin) return res.status(403).json({ error: 'Admin access required' });
+  next();
+}
+
+/** Middleware for admin HTML pages: redirect non-admins to the dashboard. */
+function requireAdminPage(req, res, next) {
+  if (!req.user) return res.redirect('/login?next=' + encodeURIComponent(req.originalUrl));
+  if (!req.user.is_admin) return res.redirect('/dashboard');
+  next();
+}
+
+module.exports = { hashPassword, verifyPassword, createSession, getSessionUser, destroySession, attachUser, requireAuth, requireAuthPage, requireAdmin, requireAdminPage };

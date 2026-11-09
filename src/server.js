@@ -8,6 +8,7 @@ const db = require('./db');
 const auth = require('./auth');
 const storeRoutes = require('./routes/store');
 const clientRoutes = require('./routes/client');
+const adminRoutes = require('./routes/admin');
 
 const app = express();
 app.disable('x-powered-by');
@@ -59,6 +60,7 @@ app.get('/api/auth/me', (req, res) => {
 // --------------------------------------------------------------- API -------
 app.use('/api/store', storeRoutes);
 app.use('/api/client', clientRoutes);
+app.use('/api/admin', adminRoutes);
 
 // -------------------------------------------------------------- pages ------
 const pages = [
@@ -66,10 +68,12 @@ const pages = [
   { route: '/store', file: 'store.html', guard: false },
   { route: '/dashboard', file: 'dashboard.html', guard: true },
   { route: '/server/:uuid', file: 'server.html', guard: true },
+  { route: '/admin', file: 'admin.html', guard: 'admin' },
 ];
 const noop = (req, res, next) => next();
 for (const p of pages) {
-  app.get(p.route, p.guard ? auth.requireAuthPage : noop, (req, res) => {
+  const guard = p.guard === 'admin' ? auth.requireAdminPage : p.guard ? auth.requireAuthPage : noop;
+  app.get(p.route, guard, (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', p.file));
   });
 }
@@ -77,6 +81,14 @@ for (const p of pages) {
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
+
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error('[panel] error:', err.message);
+  res.status(500).json({ error: 'Internal server error' });
+});
+
+process.on('unhandledRejection', (e) => console.error('[panel] unhandled rejection:', e));
 
 app.listen(config.port, config.host, () => {
   console.log(`[panel] ${config.siteName} panel listening on http://${config.host}:${config.port}`);

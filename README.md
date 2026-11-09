@@ -61,6 +61,26 @@ npm start         # panel on :3000  → http://localhost:3000
 | `WINGS_NODE` | `node-1` | Node name shown in the UI |
 | `DEMO_PAYMENTS` | `true` | Simulate payments (no real gateway) |
 
+## 🛡️ Admin area
+
+An admin dashboard is available at **/admin** (visible in the nav for admin users only):
+
+- **Overview** — total users/servers/orders, demo revenue, servers per game, live server states, recent orders
+- **Users** — list all customers with server/order counts and spend; promote/demote admins; delete users (removes their servers too)
+- **Servers** — every server on the node with owner, game, plan and live state; start/restart/stop/destroy any server
+- **Orders** — all orders with customer, totals and payment references
+
+The admin API lives under `/api/admin/*` (session auth + `is_admin` check).
+
+A bootstrap admin account is created automatically on first boot:
+
+```
+ADMIN_EMAIL=admin@panelzilla.gg     (default)
+ADMIN_PASSWORD=admin12345          (default — ALWAYS override in production!)
+```
+
+Set both via environment variables (e.g. in `.env`) before `docker compose up`.
+
 ## API overview
 
 Store (public): `GET /api/store/games`, cart + checkout under `/api/store/*` (auth required).

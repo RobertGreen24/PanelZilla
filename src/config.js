@@ -16,4 +16,8 @@ module.exports = {
   siteName: process.env.SITE_NAME || 'PanelZilla',
   // Demo checkout: payments are simulated, no real gateway is called.
   demoPayments: (process.env.DEMO_PAYMENTS || 'true') === 'true',
+  // Bootstrap administrator account — created/promoted automatically on boot.
+  // ALWAYS set these in production via environment variables.
+  adminEmail: process.env.ADMIN_EMAIL || 'admin@panelzilla.gg',
+  adminPassword: process.env.ADMIN_PASSWORD || 'admin12345',
 };

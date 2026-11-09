@@ -43,6 +43,7 @@ window.PZ = (() => {
         <a href="/" class="${active === 'home' ? 'active' : ''}">Home</a>
         <a href="/store" class="${active === 'store' ? 'active' : ''}">Store</a>
         ${user ? `<a href="/dashboard" class="${active === 'dashboard' ? 'active' : ''}">Dashboard</a>` : ''}
+        ${user && user.is_admin ? `<a href="/admin" class="${active === 'admin' ? 'active' : ''}">🛡️ Admin</a>` : ''}
       </div>
       <div class="spacer"></div>
       ${user

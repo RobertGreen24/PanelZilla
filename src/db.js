@@ -139,4 +139,21 @@ if (seed.c === 0) {
   console.log(`[db] seeded ${EGGS.length} eggs with ${EGGS.length * TIERS.length} store plans`);
 }
 
+// ------------------------------------------------- bootstrap admin user ----
+// Ensures an administrator account exists (created on first boot, promoted if
+// it already exists). Credentials come from ADMIN_EMAIL / ADMIN_PASSWORD.
+function ensureAdmin() {
+  const bcrypt = require('bcryptjs');
+  const row = db.prepare('SELECT id, is_admin FROM users WHERE email = ?').get(config.adminEmail);
+  if (!row) {
+    db.prepare('INSERT INTO users (email, username, password_hash, is_admin) VALUES (?,?,?,1)')
+      .run(config.adminEmail, 'admin', bcrypt.hashSync(config.adminPassword, 10));
+    console.log(`[db] created admin user ${config.adminEmail} (set ADMIN_PASSWORD to change it)`);
+  } else if (!row.is_admin) {
+    db.prepare('UPDATE users SET is_admin = 1 WHERE id = ?').run(row.id);
+    console.log(`[db] promoted ${config.adminEmail} to admin`);
+  }
+}
+ensureAdmin();
+
 module.exports = db;
